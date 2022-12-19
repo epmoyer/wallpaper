@@ -8,6 +8,7 @@ import (
 	"math"
 	"os"
 
+	"github.com/disintegration/imaging"
 	"github.com/teacat/noire"
 )
 
@@ -161,7 +162,7 @@ func createTestImage3(rect image.Rectangle) (created *image.NRGBA) {
 	return
 }
 
-func createTestImage2(rect image.Rectangle) (created *image.NRGBA) {
+func createTestImage2(rect image.Rectangle) *image.NRGBA {
 	pix := make([]uint8, rect.Dx()*rect.Dy()*4)
 	stride := rect.Dx() * 4
 	m1X := rect.Dx()
@@ -183,7 +184,7 @@ func createTestImage2(rect image.Rectangle) (created *image.NRGBA) {
 			pix[base+3] = 255
 		}
 	}
-	created = &image.NRGBA{
+	created := &image.NRGBA{
 		Pix:    pix,
 		Stride: rect.Dx() * 4,
 		Rect:   rect,
@@ -191,7 +192,9 @@ func createTestImage2(rect image.Rectangle) (created *image.NRGBA) {
 	brighten(created, 0.23)
 	// lighten(created, 0.03)
 	saturate(created, 0.25)
-	return
+	// created =
+	dstImage := imaging.Blur(created, 3.2)
+	return dstImage
 }
 
 func distance(x1 int, y1 int, x2 int, y2 int) float64 {
