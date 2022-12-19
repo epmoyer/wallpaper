@@ -7,6 +7,8 @@ import (
 	"log"
 	"math"
 	"os"
+
+	"github.com/teacat/noire"
 )
 
 func main() {
@@ -14,12 +16,12 @@ func main() {
 	var img *image.NRGBA
 	// img = createTestImage1(rect)
 	// save("image1.png", img)
-	// img = createTestImage2(rect)
-	// save("image2.png", img)
+	img = createTestImage2(rect)
+	save("image2.png", img)
 	// img = createTestImage3(rect)
 	// save("image3.png", img)
-	img = createTestImage4(rect)
-	save("image4.png", img)
+	// img = createTestImage4(rect)
+	// save("image4.png", img)
 }
 
 func createTestImage4(rect image.Rectangle) (created *image.NRGBA) {
@@ -62,6 +64,37 @@ func createTestImage4(rect image.Rectangle) (created *image.NRGBA) {
 		Rect:   rect,
 	}
 	return
+}
+
+func brighten(image *image.NRGBA) {
+	var maxComponent uint8
+	for x := 0; x < image.Rect.Dx(); x++ {
+		for y := 0; y < image.Rect.Dy(); y++ {
+			base := x*4 + y*image.Stride
+			for i := 0; i < 3; i++ {
+				if image.Pix[base+i] > maxComponent {
+					maxComponent = image.Pix[base+i]
+				}
+			}
+		}
+	}
+	// bump := 255 - maxComponent
+	// bump = 100
+	var r, g, b float64
+	for x := 0; x < image.Rect.Dx(); x++ {
+		for y := 0; y < image.Rect.Dy(); y++ {
+			base := x*4 + y*image.Stride
+			c := noire.NewRGB(
+				float64(image.Pix[base+0]),
+				float64(image.Pix[base+1]),
+				float64(image.Pix[base+2]))
+			r, g, b = c.Lighten(0.2).RGB()
+			image.Pix[base+0] = uint8(r)
+			image.Pix[base+1] = uint8(g)
+			image.Pix[base+2] = uint8(b)
+			// image.Pix[base+0], image.Pix[base+1], image.Pix[base+2] = c.Lighten(0.2).RGB()
+		}
+	}
 }
 
 func createTestImage3(rect image.Rectangle) (created *image.NRGBA) {
@@ -149,6 +182,7 @@ func createTestImage2(rect image.Rectangle) (created *image.NRGBA) {
 		Stride: rect.Dx() * 4,
 		Rect:   rect,
 	}
+	brighten(created)
 	return
 }
 
