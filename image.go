@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	rect := image.Rect(0, 0, 100, 100)
+	rect := image.Rect(0, 0, 200, 200)
 	img := createTestImage(rect)
 	save("random.png", img)
 }
@@ -20,12 +20,13 @@ func createTestImage(rect image.Rectangle) (created *image.NRGBA) {
 	stride := rect.Dx() * 4
 	for x := 0; x < rect.Dx(); x++ {
 		for y := 0; y < rect.Dy(); y++ {
+			yNorm := float64(y) / float64(rect.Dy())
 			angle := (float64)(x+y) / 1.4567
 			amplitude := math.Sin(angle)
 			base := x*4 + y*stride
 			shade := uint8((amplitude+1)*10) + 200
-			pix[base] = shade
-			pix[base+1] = shade
+			pix[base] = shade - 100 + uint8(120*yNorm)
+			pix[base+1] = shade - 50
 			pix[base+2] = shade + 30
 			pix[base+3] = 255
 			// fmt.Println(x)
