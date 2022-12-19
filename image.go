@@ -62,7 +62,8 @@ func createWIP(rect image.Rectangle) *image.NRGBA {
 		for y := 0; y < height; y++ {
 			m2Distance := distance(x, y, m1X, m1Y)
 			m2DistanceNorm := m2Distance / diagonal
-			bump := 72 * (1 - m2DistanceNorm)
+			// bump := 72 * (1 - m2DistanceNorm)
+			bump := 120 * (1 - m2DistanceNorm)
 			yNorm := float64(y) / float64(height)
 			angle := (float64)(x+width-y) / 5.4567
 			amplitude := math.Sin(angle)
