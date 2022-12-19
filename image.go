@@ -13,16 +13,32 @@ import (
 	"github.com/teacat/noire"
 )
 
+type displayT struct {
+	Name string
+	Rect image.Rectangle
+}
+
 func main() {
-	SIZES := []image.Rectangle{
-		image.Rect(0, 0, 2560, 1664),
-		image.Rect(0, 0, 5120, 1440),
+	// SIZES := []image.Rectangle{
+	// 	image.Rect(0, 0, 2560, 1664),
+	// 	image.Rect(0, 0, 5120, 1440),
+	// }
+	displays := []displayT{
+		{
+			Name: "m2",
+			Rect: image.Rect(0, 0, 2560, 1664),
+		},
+		{
+			Name: "DellU4919DW",
+			Rect: image.Rect(0, 0, 5120, 1440),
+		},
 	}
-	for _, rect := range SIZES {
+	for _, display := range displays {
 		var img *image.NRGBA
 		// img = createTestImage1(rect)
 		// save("image1.png", img)
-		filename := fmt.Sprintf("wallpaper_plumset_%d_%d.png", rect.Dx(), rect.Dy())
+		rect := display.Rect
+		filename := fmt.Sprintf("wallpaper_plumset_%s_%d_%d.png", display.Name, rect.Dx(), rect.Dy())
 		fmt.Printf("Creating %s...\n", filename)
 		img = createPlumset(rect)
 		save(filename, img)
