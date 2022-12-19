@@ -19,33 +19,27 @@ type displayT struct {
 }
 
 func main() {
-	// SIZES := []image.Rectangle{
-	// 	image.Rect(0, 0, 2560, 1664),
-	// 	image.Rect(0, 0, 5120, 1440),
-	// }
 	displays := []displayT{
 		{
-			Name: "m2",
+			Name: "m2_Air",
 			Rect: image.Rect(0, 0, 2560, 1664),
 		},
 		{
-			Name: "DellU4919DW",
+			Name: "MacBookPro_16",
+			Rect: image.Rect(0, 0, 3072, 1920),
+		},
+		{
+			Name: "Dell_U4919DW",
 			Rect: image.Rect(0, 0, 5120, 1440),
 		},
 	}
 	for _, display := range displays {
 		var img *image.NRGBA
-		// img = createTestImage1(rect)
-		// save("image1.png", img)
 		rect := display.Rect
-		filename := fmt.Sprintf("wallpaper_plumset_%s_%d_%d.png", display.Name, rect.Dx(), rect.Dy())
+		filename := fmt.Sprintf("wallpaper_plumset_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
 		fmt.Printf("Creating %s...\n", filename)
 		img = createPlumset(rect)
 		save(filename, img)
-		// img = createTestImage3(rect)
-		// save("image3.png", img)
-		// img = createTestImage4(rect)
-		// save("image4.png", img)
 	}
 }
 
