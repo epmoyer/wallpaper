@@ -66,20 +66,7 @@ func createTestImage4(rect image.Rectangle) (created *image.NRGBA) {
 	return
 }
 
-func colorTransform(image *image.NRGBA, lightenPercent float64, saturatePercent float64) {
-	var maxComponent uint8
-	for x := 0; x < image.Rect.Dx(); x++ {
-		for y := 0; y < image.Rect.Dy(); y++ {
-			base := x*4 + y*image.Stride
-			for i := 0; i < 3; i++ {
-				if image.Pix[base+i] > maxComponent {
-					maxComponent = image.Pix[base+i]
-				}
-			}
-		}
-	}
-	// bump := 255 - maxComponent
-	// bump = 100
+func lighten(image *image.NRGBA, lightenPercent float64) {
 	var r, g, b float64
 	for x := 0; x < image.Rect.Dx(); x++ {
 		for y := 0; y < image.Rect.Dy(); y++ {
@@ -88,11 +75,27 @@ func colorTransform(image *image.NRGBA, lightenPercent float64, saturatePercent 
 				float64(image.Pix[base+0]),
 				float64(image.Pix[base+1]),
 				float64(image.Pix[base+2]))
-			r, g, b = c.Saturate(saturatePercent).Lighten(lightenPercent).RGB()
+			r, g, b = c.Lighten(lightenPercent).RGB()
 			image.Pix[base+0] = uint8(r)
 			image.Pix[base+1] = uint8(g)
 			image.Pix[base+2] = uint8(b)
-			// image.Pix[base+0], image.Pix[base+1], image.Pix[base+2] = c.Lighten(0.2).RGB()
+		}
+	}
+}
+
+func saturate(image *image.NRGBA, saturatePercent float64) {
+	var r, g, b float64
+	for x := 0; x < image.Rect.Dx(); x++ {
+		for y := 0; y < image.Rect.Dy(); y++ {
+			base := x*4 + y*image.Stride
+			c := noire.NewRGB(
+				float64(image.Pix[base+0]),
+				float64(image.Pix[base+1]),
+				float64(image.Pix[base+2]))
+			r, g, b = c.Saturate(saturatePercent).RGB()
+			image.Pix[base+0] = uint8(r)
+			image.Pix[base+1] = uint8(g)
+			image.Pix[base+2] = uint8(b)
 		}
 	}
 }
@@ -182,6 +185,8 @@ func createTestImage2(rect image.Rectangle) (created *image.NRGBA) {
 		Stride: rect.Dx() * 4,
 		Rect:   rect,
 	}
+	saturate(created, 0.5)
+	lighten(created, 0.3)
 	// colorTransform(created, 0.5, 0.5)
 	return
 }
