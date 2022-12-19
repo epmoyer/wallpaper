@@ -25,9 +25,8 @@ func main() {
 func createTestImage4(rect image.Rectangle) (created *image.NRGBA) {
 	pix := make([]uint8, rect.Dx()*rect.Dy()*4)
 	stride := rect.Dx() * 4
-	// m1X := rect.Dx()
-	m1X := 0
-	m1Y := rect.Dy()
+	m1X := rect.Dx()
+	m1Y := 0
 	diagonal := math.Sqrt(float64(rect.Dx()*rect.Dx() + rect.Dy()*rect.Dy()))
 	for x := 0; x < rect.Dx(); x++ {
 		for y := 0; y < rect.Dy(); y++ {
@@ -41,7 +40,6 @@ func createTestImage4(rect image.Rectangle) (created *image.NRGBA) {
 			// amplitude2 := math.Sin(angle2)
 			base := x*4 + y*stride
 			shade := uint8((amplitude+1)*5) + 150
-			pix[base] = shade - 100 + uint8(120*yNorm)
 			// pix[base+1] = shade - 50 + uint8((amplitude2+1)*10)
 			var bump uint8
 			// bump = 0
@@ -50,9 +48,10 @@ func createTestImage4(rect image.Rectangle) (created *image.NRGBA) {
 			// 	bump = uint8(30 * (1 - m2DistanceNorm))
 			// }
 			bump = uint8(75 * (1 - m2DistanceNorm))
-			pix[base+0] = 255
-			pix[base+1] = shade - 40 + bump
-			pix[base+2] = shade + 20 + bump
+			pix[base+0] = shade + 0
+			pix[base+1] = shade - 100 + uint8(120*yNorm)
+			// pix[base+2] = shade - 100 + uint8(120*yNorm) + bump
+			pix[base+2] = shade + 15 + bump
 			pix[base+3] = 255
 			// fmt.Println(x)
 		}
