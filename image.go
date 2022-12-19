@@ -24,14 +24,14 @@ func main() {
 			Name: "m2_Air",
 			Rect: image.Rect(0, 0, 2560, 1664),
 		},
-		// {
-		// 	Name: "MacBookPro_16",
-		// 	Rect: image.Rect(0, 0, 3072, 1920),
-		// },
-		// {
-		// 	Name: "Dell_U4919DW",
-		// 	Rect: image.Rect(0, 0, 5120, 1440),
-		// },
+		{
+			Name: "MacBookPro_16",
+			Rect: image.Rect(0, 0, 3072, 1920),
+		},
+		{
+			Name: "Dell_U4919DW",
+			Rect: image.Rect(0, 0, 5120, 1440),
+		},
 	}
 	for _, display := range displays {
 		var img *image.NRGBA
@@ -42,20 +42,21 @@ func main() {
 		// img = createPlumset(rect)
 		// save(filename, img)
 
-		filename := fmt.Sprintf("wallpaper_WIP_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
+		filename := fmt.Sprintf("wallpaper_melon_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
 		fmt.Printf("Creating %s...\n", filename)
-		img = createWIP(rect)
+		img = createMelon(rect)
 		save(filename, img)
 	}
 }
 
-func createWIP(rect image.Rectangle) *image.NRGBA {
+func createMelon(rect image.Rectangle) *image.NRGBA {
 	var r, g, b float64
 	width := rect.Dx()
 	height := rect.Dy()
 	pix := make([]uint8, width*height*4)
 	stride := width * 4
-	m1X := width / 2
+	// m1X := width / 2
+	m1X := 0
 	m1Y := 0
 	diagonal := math.Sqrt(float64(width*width + height*height))
 	for x := 0; x < width; x++ {
@@ -85,13 +86,12 @@ func createWIP(rect image.Rectangle) *image.NRGBA {
 		Stride: rect.Dx() * 4,
 		Rect:   rect,
 	}
-	// brighten(img, 0.23)
+	brighten(img, 0.1)
 	// lighten(created, 0.03)
-	// saturate(img, 0.25)
+	saturate(img, 0.1)
 	// hue(img, -55)
 	// created =
-	// img = imaging.Blur(img, 3.2)
-	// img = imaging.(img, 3.2)
+	img = imaging.Blur(img, 3.2)
 	return img
 }
 
