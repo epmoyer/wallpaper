@@ -66,7 +66,7 @@ func createTestImage4(rect image.Rectangle) (created *image.NRGBA) {
 	return
 }
 
-func brighten(image *image.NRGBA) {
+func lighten(image *image.NRGBA, percent float64) {
 	var maxComponent uint8
 	for x := 0; x < image.Rect.Dx(); x++ {
 		for y := 0; y < image.Rect.Dy(); y++ {
@@ -88,7 +88,7 @@ func brighten(image *image.NRGBA) {
 				float64(image.Pix[base+0]),
 				float64(image.Pix[base+1]),
 				float64(image.Pix[base+2]))
-			r, g, b = c.Lighten(0.2).RGB()
+			r, g, b = c.Lighten(percent).RGB()
 			image.Pix[base+0] = uint8(r)
 			image.Pix[base+1] = uint8(g)
 			image.Pix[base+2] = uint8(b)
@@ -182,7 +182,7 @@ func createTestImage2(rect image.Rectangle) (created *image.NRGBA) {
 		Stride: rect.Dx() * 4,
 		Rect:   rect,
 	}
-	brighten(created)
+	lighten(created, 0.2)
 	return
 }
 
