@@ -35,7 +35,7 @@ func createTestImage2(rect image.Rectangle) (created *image.NRGBA) {
 			amplitude := math.Sin(angle)
 			// amplitude2 := math.Sin(angle2)
 			base := x*4 + y*stride
-			shade := uint8((amplitude+1)*5) + 200
+			shade := uint8((amplitude+1)*5) + 150
 			pix[base] = shade - 100 + uint8(120*yNorm)
 			// pix[base+1] = shade - 50 + uint8((amplitude2+1)*10)
 			var bump uint8
@@ -44,10 +44,10 @@ func createTestImage2(rect image.Rectangle) (created *image.NRGBA) {
 			// 	// if m2Distance == -100 {
 			// 	bump = uint8(30 * (1 - m2DistanceNorm))
 			// }
-			bump = uint8(20 * (1 - m2DistanceNorm))
-			pix[base+1] = shade - 50
+			bump = uint8(75 * (1 - m2DistanceNorm))
+			pix[base+1] = shade - 50 + bump
 			// pix[base+2] = shade + 30 + uint8(20*m2DistanceNorm)
-			pix[base+2] = shade + 30 + bump
+			pix[base+2] = shade + 20 + bump
 			pix[base+3] = 255
 			// fmt.Println(x)
 		}
