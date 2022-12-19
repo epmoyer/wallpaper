@@ -202,10 +202,9 @@ func createTestImage2(rect image.Rectangle) (created *image.NRGBA) {
 		Stride: rect.Dx() * 4,
 		Rect:   rect,
 	}
-	saturate(created, 0.11)
-	// lighten(created, 0.3)
 	brighten(created, 0.23)
 	lighten(created, 0.01)
+	saturate(created, 0.10)
 	// colorTransform(created, 0.5, 0.5)
 	return
 }
