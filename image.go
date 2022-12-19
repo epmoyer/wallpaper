@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/rand"
+	"fmt"
 	"image"
 	"image/png"
 	"log"
@@ -13,16 +14,23 @@ import (
 )
 
 func main() {
-	rect := image.Rect(0, 0, 2560, 1664)
-	var img *image.NRGBA
-	// img = createTestImage1(rect)
-	// save("image1.png", img)
-	img = createTestImage2(rect)
-	save("image2.png", img)
-	// img = createTestImage3(rect)
-	// save("image3.png", img)
-	// img = createTestImage4(rect)
-	// save("image4.png", img)
+	SIZES := []image.Rectangle{
+		image.Rect(0, 0, 2560, 1664),
+		image.Rect(0, 0, 5120, 1440),
+	}
+	for _, rect := range SIZES {
+		var img *image.NRGBA
+		// img = createTestImage1(rect)
+		// save("image1.png", img)
+		filename := fmt.Sprintf("wallpaper_plumset_%d_%d.png", rect.Dx(), rect.Dy())
+		fmt.Printf("Creating %s...\n", filename)
+		img = createPlumset(rect)
+		save(filename, img)
+		// img = createTestImage3(rect)
+		// save("image3.png", img)
+		// img = createTestImage4(rect)
+		// save("image4.png", img)
+	}
 }
 
 func createTestImage4(rect image.Rectangle) (created *image.NRGBA) {
@@ -162,7 +170,7 @@ func createTestImage3(rect image.Rectangle) (created *image.NRGBA) {
 	return
 }
 
-func createTestImage2(rect image.Rectangle) *image.NRGBA {
+func createPlumset(rect image.Rectangle) *image.NRGBA {
 	pix := make([]uint8, rect.Dx()*rect.Dy()*4)
 	stride := rect.Dx() * 4
 	m1X := rect.Dx()
@@ -184,17 +192,17 @@ func createTestImage2(rect image.Rectangle) *image.NRGBA {
 			pix[base+3] = 255
 		}
 	}
-	created := &image.NRGBA{
+	img := &image.NRGBA{
 		Pix:    pix,
 		Stride: rect.Dx() * 4,
 		Rect:   rect,
 	}
-	brighten(created, 0.23)
+	brighten(img, 0.23)
 	// lighten(created, 0.03)
-	saturate(created, 0.25)
+	saturate(img, 0.25)
 	// created =
-	dstImage := imaging.Blur(created, 3.2)
-	return dstImage
+	img = imaging.Blur(img, 3.2)
+	return img
 }
 
 func distance(x1 int, y1 int, x2 int, y2 int) float64 {
