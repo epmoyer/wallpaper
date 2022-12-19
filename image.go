@@ -177,7 +177,7 @@ func createTestImage2(rect image.Rectangle) (created *image.NRGBA) {
 			base := x*4 + y*stride
 			shade := uint8((amplitude+1)*5) + 150
 			pix[base] = shade - 100 + uint8(120*yNorm)
-			bump := uint8(75 * (1 - m2DistanceNorm))
+			bump := uint8(72 * (1 - m2DistanceNorm))
 			pix[base+1] = shade - 40 + bump
 			pix[base+2] = shade + 20 + bump
 			pix[base+3] = 255
@@ -189,8 +189,8 @@ func createTestImage2(rect image.Rectangle) (created *image.NRGBA) {
 		Rect:   rect,
 	}
 	brighten(created, 0.23)
-	lighten(created, 0.01)
-	saturate(created, 0.10)
+	// lighten(created, 0.03)
+	saturate(created, 0.25)
 	return
 }
 
