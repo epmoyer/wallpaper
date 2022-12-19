@@ -83,6 +83,23 @@ func lighten(image *image.NRGBA, lightenPercent float64) {
 	}
 }
 
+func brighten(image *image.NRGBA, percent float64) {
+	var r, g, b float64
+	for x := 0; x < image.Rect.Dx(); x++ {
+		for y := 0; y < image.Rect.Dy(); y++ {
+			base := x*4 + y*image.Stride
+			c := noire.NewRGB(
+				float64(image.Pix[base+0]),
+				float64(image.Pix[base+1]),
+				float64(image.Pix[base+2]))
+			r, g, b = c.Brighten(percent).RGB()
+			image.Pix[base+0] = uint8(r)
+			image.Pix[base+1] = uint8(g)
+			image.Pix[base+2] = uint8(b)
+		}
+	}
+}
+
 func saturate(image *image.NRGBA, saturatePercent float64) {
 	var r, g, b float64
 	for x := 0; x < image.Rect.Dx(); x++ {
@@ -185,8 +202,10 @@ func createTestImage2(rect image.Rectangle) (created *image.NRGBA) {
 		Stride: rect.Dx() * 4,
 		Rect:   rect,
 	}
-	saturate(created, 0.5)
-	lighten(created, 0.3)
+	saturate(created, 0.11)
+	// lighten(created, 0.3)
+	brighten(created, 0.23)
+	lighten(created, 0.01)
 	// colorTransform(created, 0.5, 0.5)
 	return
 }
