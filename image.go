@@ -28,30 +28,35 @@ func main() {
 			Rect: image.Rect(0, 0, 2560, 1664),
 			PPI:  224,
 		},
-		{
-			Name: "MacBookPro_16",
-			Rect: image.Rect(0, 0, 3072, 1920),
-			PPI:  226,
-		},
-		{
-			Name: "Dell_U4919DW",
-			Rect: image.Rect(0, 0, 5120, 1440),
-			PPI:  109,
-		},
+		// {
+		// 	Name: "MacBookPro_16",
+		// 	Rect: image.Rect(0, 0, 3072, 1920),
+		// 	PPI:  226,
+		// },
+		// {
+		// 	Name: "Dell_U4919DW",
+		// 	Rect: image.Rect(0, 0, 5120, 1440),
+		// 	PPI:  109,
+		// },
 	}
 	for _, display := range displays {
 		var img *image.NRGBA
 		rect := display.Rect
 		var filename string
 
-		filename = fmt.Sprintf("wallpaper_plumset_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
-		fmt.Printf("Creating %s...\n", filename)
-		img = createPlumset(rect, display)
-		save(filename, img)
+		// filename = fmt.Sprintf("wallpaper_plumset_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
+		// fmt.Printf("Creating %s...\n", filename)
+		// img = createPlumset(rect, display)
+		// save(filename, img)
 
-		filename = fmt.Sprintf("wallpaper_melon_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
+		// filename = fmt.Sprintf("wallpaper_melon_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
+		// fmt.Printf("Creating %s...\n", filename)
+		// img = createMelon(rect, display)
+		// save(filename, img)
+
+		filename = fmt.Sprintf("wallpaper_bluehatch_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
 		fmt.Printf("Creating %s...\n", filename)
-		img = createMelon(rect, display)
+		img = createBlueHatch(rect, display)
 		save(filename, img)
 
 		// filename = fmt.Sprintf("wallpaper_bluedrops_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
@@ -133,6 +138,60 @@ func createBluedrops(rect image.Rectangle) *image.NRGBA {
 	// created =
 	// img = imaging.Blur(img, 3.2)
 	// img = imaging.AdjustBrightness(img, -20)
+	return img
+}
+
+func createBlueHatch(rect image.Rectangle, display displayT) *image.NRGBA {
+	var r, g, b float64
+	width := rect.Dx()
+	height := rect.Dy()
+	pix := make([]uint8, width*height*4)
+	stride := width * 4
+	// m1X := width / 2
+	m1X := 0
+	m1Y := 0
+	diagonal := math.Sqrt(float64(width*width + height*height))
+	for x := 0; x < width; x++ {
+		for y := 0; y < height; y++ {
+			m2Distance := distance(x, y, m1X, m1Y)
+			m2DistanceNorm := m2Distance / diagonal
+			bump := 72 * (1 - m2DistanceNorm)
+			yNorm := float64(y) / float64(height)
+			angle := (float64)(x+width-y) / 3.4567
+			angle *= float64(BASELINE_PPI) / float64(display.PPI)
+			angle2 := (float64)(x+y) / 3.4567
+			angle2 *= float64(BASELINE_PPI) / float64(display.PPI)
+			// amplitude := math.Sin(angle) + math.Sin(angle2)
+			base := x*4 + y*stride
+			var shade float64
+			// shade = (amplitude + 1) * 5
+			if math.Sin(angle) > 0.5 || math.Sin(angle2) > 0.5 {
+				shade = 5
+			}
+			fade := 70 * yNorm
+
+			r = 128 + 10 + shade
+			g = 128 + shade*1.2 + fade
+			b = 128 + 30 + shade + bump*0.001
+
+			pix[base+0] = uint8(r)
+			pix[base+1] = uint8(g)
+			pix[base+2] = uint8(b)
+			pix[base+3] = 255
+		}
+	}
+	img := &image.NRGBA{
+		Pix:    pix,
+		Stride: rect.Dx() * 4,
+		Rect:   rect,
+	}
+	// brighten(img, 0.1)
+	// lighten(created, 0.03)
+	saturate(img, 0.1)
+	// hue(img, -55)
+	// created =
+	img = imaging.Blur(img, 3.2)
+	img = imaging.AdjustBrightness(img, -20)
 	return img
 }
 
