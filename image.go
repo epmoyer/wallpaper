@@ -41,13 +41,13 @@ func main() {
 			Name:    "MacBookPro_16",
 			Rect:    image.Rect(0, 0, 3072, 1920),
 			PPI:     226,
-			enabled: true,
+			enabled: false,
 		},
 		{
 			Name:    "Dell_U4919DW",
 			Rect:    image.Rect(0, 0, 5120, 1440),
 			PPI:     109,
-			enabled: true,
+			enabled: false,
 		},
 	}
 
@@ -55,12 +55,7 @@ func main() {
 		{
 			Name:       "hatch-saw-blue",
 			RenderFunc: createHatchSawBlue,
-			enabled:    true,
-		},
-		{
-			Name:       "hatch-tri-blue",
-			RenderFunc: createBlueHatchTri,
-			enabled:    true,
+			enabled:    false,
 		},
 		{
 			Name:       "hatch-saw-purple",
@@ -68,29 +63,34 @@ func main() {
 			enabled:    true,
 		},
 		{
+			Name:       "hatch-tri-blue",
+			RenderFunc: createBlueHatchTri,
+			enabled:    false,
+		},
+		{
 			Name:       "hatch-sine-blue",
 			RenderFunc: createBlueHatch,
-			enabled:    true,
+			enabled:    false,
 		},
 		{
 			Name:       "hatch-sine-purple",
 			RenderFunc: createPurpleHatch,
-			enabled:    true,
+			enabled:    false,
 		},
 		{
 			Name:       "hatch-sine-green",
 			RenderFunc: createGreenHatch,
-			enabled:    true,
+			enabled:    false,
 		},
 		{
 			Name:       "plumset",
 			RenderFunc: createPlumset,
-			enabled:    true,
+			enabled:    false,
 		},
 		{
 			Name:       "melon",
 			RenderFunc: createMelon,
-			enabled:    true,
+			enabled:    false,
 		},
 		// {
 		// 	Name:       "drops-blue",
@@ -108,6 +108,9 @@ func main() {
 		var filename string
 
 		for _, render := range renders {
+			if !render.enabled {
+				continue
+			}
 			filename = fmt.Sprintf(
 				"wallpaper_%s_%s_%dx%d.png",
 				render.Name, display.Name, rect.Dx(), rect.Dy())
