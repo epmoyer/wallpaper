@@ -233,7 +233,7 @@ func createBlueHatchSaw(rect image.Rectangle, display displayT) *image.NRGBA {
 			amplitude := -(math.Mod(angle, 2*math.Pi) - math.Pi) / math.Pi
 
 			base := x*4 + y*stride
-			shade := (amplitude + 1) * 10
+			shade := (amplitude + 1) * 7
 			fade := 80 * (1 - yNorm)
 
 			r = 50 + 10 + shade + fade
