@@ -54,9 +54,14 @@ func main() {
 		// img = createMelon(rect, display)
 		// save(filename, img)
 
-		filename = fmt.Sprintf("wallpaper_bluehatch_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
+		// filename = fmt.Sprintf("wallpaper_bluehatch_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
+		// fmt.Printf("Creating %s...\n", filename)
+		// img = createBlueHatch(rect, display)
+		// save(filename, img)
+
+		filename = fmt.Sprintf("wallpaper_purplehatch_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
 		fmt.Printf("Creating %s...\n", filename)
-		img = createBlueHatch(rect, display)
+		img = createPurpleHatch(rect, display)
 		save(filename, img)
 
 		// filename = fmt.Sprintf("wallpaper_bluedrops_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
@@ -141,6 +146,13 @@ func createBluedrops(rect image.Rectangle) *image.NRGBA {
 	return img
 }
 
+func createPurpleHatch(rect image.Rectangle, display displayT) *image.NRGBA {
+	img := createBlueHatch(rect, display)
+	hue(img, +70)
+	img = imaging.AdjustSaturation(img, -60)
+	return img
+}
+
 func createBlueHatch(rect image.Rectangle, display displayT) *image.NRGBA {
 	var r, g, b float64
 	width := rect.Dx()
@@ -157,12 +169,12 @@ func createBlueHatch(rect image.Rectangle, display displayT) *image.NRGBA {
 			m2DistanceNorm := m2Distance / diagonal
 			bump := 72 * (1 - m2DistanceNorm)
 			yNorm := float64(y) / float64(height)
-			angle := (float64)(x+width-y) / 3.4567
+			angle := (float64)(x+width-y) / 2.12345
 			angle *= float64(BASELINE_PPI) / float64(display.PPI)
 			amplitude := math.Sin(angle)
 			base := x*4 + y*stride
 			shade := (amplitude + 1) * 5
-			fade := 80 * yNorm
+			fade := 80 * (1 - yNorm)
 
 			r = 50 + 10 + shade + fade
 			g = 50 + 40 + shade*1.2 + fade
@@ -184,7 +196,7 @@ func createBlueHatch(rect image.Rectangle, display displayT) *image.NRGBA {
 	saturate(img, 0.1)
 	// hue(img, -55)
 	// created =
-	img = imaging.Blur(img, 3.2)
+	// img = imaging.Blur(img, 3.2)
 	img = imaging.AdjustBrightness(img, -20)
 	return img
 }
