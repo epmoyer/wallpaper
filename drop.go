@@ -9,6 +9,7 @@ type dropT struct {
 	y         float64
 	amplitude float64
 	size      float64
+	sizeSq    float64
 	waveSize  float64
 }
 
@@ -16,11 +17,18 @@ type dropFieldT struct {
 	Drops []dropT
 }
 
+func (drop *dropT) init() {
+	drop.sizeSq = drop.size * drop.size
+}
+
 func (drop dropT) render(x float64, y float64) (r, g, b float64) {
-	d := distanceF(x, y, drop.x, drop.y)
-	if d > drop.size {
+	dsq := distanceFSq(x, y, drop.x, drop.y)
+	if dsq > drop.sizeSq {
+		// Out of range
 		return 0, 0, 0
 	}
+	d := math.Sqrt(dsq)
+
 	angleToDrop := math.Atan2(x-drop.x, y-drop.y) - lightAngle
 	waveAngle := d / drop.waveSize
 	depth := math.Sin(waveAngle)
@@ -28,6 +36,13 @@ func (drop dropT) render(x float64, y float64) (r, g, b float64) {
 	depth *= drop.amplitude
 	depth *= math.Sin(angleToDrop)
 	return depth, depth / 4, depth / 4
+}
+
+func (dropField dropFieldT) init() {
+
+	for i := 0; i < len(dropField.Drops); i++ {
+		dropField.Drops[i].init()
+	}
 }
 
 func (dropField dropFieldT) render(x float64, y float64) (r, g, b float64) {

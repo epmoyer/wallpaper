@@ -23,21 +23,21 @@ const BASELINE_PPI = 109
 
 func main() {
 	displays := []displayT{
-		{
-			Name: "m2_Air",
-			Rect: image.Rect(0, 0, 2560, 1664),
-			PPI:  224,
-		},
+		// {
+		// 	Name: "m2_Air",
+		// 	Rect: image.Rect(0, 0, 2560, 1664),
+		// 	PPI:  224,
+		// },
 		// {
 		// 	Name: "MacBookPro_16",
 		// 	Rect: image.Rect(0, 0, 3072, 1920),
 		// 	PPI:  226,
 		// },
-		// {
-		// 	Name: "Dell_U4919DW",
-		// 	Rect: image.Rect(0, 0, 5120, 1440),
-		// 	PPI:  109,
-		// },
+		{
+			Name: "Dell_U4919DW",
+			Rect: image.Rect(0, 0, 5120, 1440),
+			PPI:  109,
+		},
 	}
 	for _, display := range displays {
 		var img *image.NRGBA
@@ -72,28 +72,30 @@ func createBluedrops(rect image.Rectangle) *image.NRGBA {
 	// m1Y := 0
 	// diagonal := math.Sqrt(float64(width*width + height*height))
 
-	field := dropFieldT{
-		Drops: []dropT{
-			{
-				x:         400.0,
-				y:         400.0,
-				amplitude: 30.0,
-				size:      200,
-				waveSize:  5,
-			},
-		},
-	}
+	field := dropFieldT{}
+	// field := dropFieldT{
+	// 	Drops: []dropT{
+	// 		{
+	// 			x:         400.0,
+	// 			y:         400.0,
+	// 			amplitude: 30.0,
+	// 			size:      200,
+	// 			waveSize:  5,
+	// 		},
+	// 	},
+	// }
 
 	rand.Seed(1)
 	for i := 0; i < 100; i++ {
 		field.Drops = append(field.Drops, dropT{
 			x:         rand.Float64() * float64(width),
-			y:         rand.Float64() * float64(width),
+			y:         rand.Float64() * float64(height),
 			amplitude: 20 + rand.Float64()*30,
 			size:      100 + 200*rand.Float64(),
 			waveSize:  5 + rand.Float64()*5,
 		})
 	}
+	field.init()
 
 	for x := 0; x < width; x++ {
 		for y := 0; y < height; y++ {
@@ -381,6 +383,10 @@ func distance(x1 int, y1 int, x2 int, y2 int) float64 {
 func distanceF(x1 float64, y1 float64, x2 float64, y2 float64) float64 {
 	return math.Sqrt(
 		math.Pow(x1-x2, 2) + math.Pow(y1-y2, 2))
+}
+
+func distanceFSq(x1 float64, y1 float64, x2 float64, y2 float64) float64 {
+	return math.Pow(x1-x2, 2) + math.Pow(y1-y2, 2)
 }
 
 func createTestImage1(rect image.Rectangle) (created *image.NRGBA) {
