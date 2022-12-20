@@ -86,12 +86,12 @@ func createBluedrops(rect image.Rectangle) *image.NRGBA {
 	// }
 
 	rand.Seed(1)
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 130; i++ {
 		field.Drops = append(field.Drops, dropT{
 			x:         rand.Float64() * float64(width),
 			y:         rand.Float64() * float64(height),
-			amplitude: 20 + rand.Float64()*30,
-			size:      100 + 200*rand.Float64(),
+			amplitude: 10 + rand.Float64()*30,
+			size:      200 + 200*rand.Float64(),
 			waveSize:  5 + rand.Float64()*5,
 		})
 	}
