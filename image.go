@@ -6,7 +6,6 @@ import (
 	"image/png"
 	"log"
 	"math"
-	"math/rand"
 	"os"
 
 	"github.com/disintegration/imaging"
@@ -54,14 +53,19 @@ func main() {
 		// img = createMelon(rect, display)
 		// save(filename, img)
 
-		// filename = fmt.Sprintf("wallpaper_bluehatch_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
-		// fmt.Printf("Creating %s...\n", filename)
-		// img = createBlueHatch(rect, display)
-		// save(filename, img)
+		filename = fmt.Sprintf("wallpaper_bluehatch_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
+		fmt.Printf("Creating %s...\n", filename)
+		img = createBlueHatch(rect, display)
+		save(filename, img)
 
 		filename = fmt.Sprintf("wallpaper_purplehatch_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
 		fmt.Printf("Creating %s...\n", filename)
 		img = createPurpleHatch(rect, display)
+		save(filename, img)
+
+		filename = fmt.Sprintf("wallpaper_greenhatch_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
+		fmt.Printf("Creating %s...\n", filename)
+		img = createGreenHatch(rect, display)
 		save(filename, img)
 
 		// filename = fmt.Sprintf("wallpaper_bluedrops_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
@@ -71,84 +75,9 @@ func main() {
 	}
 }
 
-func createBluedrops(rect image.Rectangle) *image.NRGBA {
-	var r, g, b float64
-	width := rect.Dx()
-	height := rect.Dy()
-	pix := make([]uint8, width*height*4)
-	stride := width * 4
-	// m1X := width / 2
-	// m1X := 0
-	// m1Y := 0
-	// diagonal := math.Sqrt(float64(width*width + height*height))
-
-	field := dropFieldT{}
-	// field := dropFieldT{
-	// 	Drops: []dropT{
-	// 		{
-	// 			x:         400.0,
-	// 			y:         400.0,
-	// 			amplitude: 30.0,
-	// 			size:      200,
-	// 			waveSize:  5,
-	// 		},
-	// 	},
-	// }
-
-	rand.Seed(1)
-	for i := 0; i < 130; i++ {
-		field.Drops = append(field.Drops, dropT{
-			x:         rand.Float64() * float64(width),
-			y:         rand.Float64() * float64(height),
-			amplitude: 10 + rand.Float64()*30,
-			size:      200 + 200*rand.Float64(),
-			waveSize:  5 + rand.Float64()*5,
-		})
-	}
-	field.init()
-
-	for x := 0; x < width; x++ {
-		for y := 0; y < height; y++ {
-
-			// m2Distance := distance(x, y, m1X, m1Y)
-			// m2DistanceNorm := m2Distance / diagonal
-			// bump := 72 * (1 - m2DistanceNorm)
-			yNorm := float64(y) / float64(height)
-			// angle := (float64)(x+width-y) / 5.4567
-			// amplitude := math.Sin(angle)
-			// shade := (amplitude + 1) * 5
-			fade := 64 * yNorm
-
-			dr, dg, db := field.render(float64(x), float64(y))
-			r = 70 + dr
-			g = 70 + fade + dg
-			b = 128 + 64 + db
-
-			base := x*4 + y*stride
-			pix[base+0] = uint8(r)
-			pix[base+1] = uint8(g)
-			pix[base+2] = uint8(b)
-			pix[base+3] = 255
-		}
-	}
-	img := &image.NRGBA{
-		Pix:    pix,
-		Stride: rect.Dx() * 4,
-		Rect:   rect,
-	}
-	// brighten(img, 0.1)
-	// lighten(created, 0.03)
-	// saturate(img, 0.1)
-	// hue(img, -55)
-	// created =
-	// img = imaging.Blur(img, 3.2)
-	// img = imaging.AdjustBrightness(img, -20)
-	return img
-}
-
 func createGreenHatch(rect image.Rectangle, display displayT) *image.NRGBA {
 	img := createBlueHatch(rect, display)
-	hue(img, -20)
+	hue(img, -25)
 	img = imaging.AdjustSaturation(img, -60)
 	img = imaging.AdjustBrightness(img, 10)
 	return img
@@ -182,7 +111,7 @@ func createBlueHatch(rect image.Rectangle, display displayT) *image.NRGBA {
 			angle *= float64(BASELINE_PPI) / float64(display.PPI)
 			amplitude := math.Sin(angle)
 			base := x*4 + y*stride
-			shade := (amplitude + 1) * 5
+			shade := (amplitude + 1) * 4
 			fade := 80 * (1 - yNorm)
 
 			r = 50 + 10 + shade + fade
