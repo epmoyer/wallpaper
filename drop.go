@@ -2,6 +2,8 @@ package main
 
 import "math"
 
+const lightAngle = 3 * math.Pi / 8
+
 type dropT struct {
 	x         float64
 	y         float64
@@ -18,11 +20,13 @@ func (drop dropT) render(x float64, y float64) (r, g, b float64) {
 	if d > drop.size {
 		return 0, 0, 0
 	}
-	angle := d / 5.0
-	depth := math.Sin(angle)
+	angleToDrop := math.Atan2(x-drop.x, y-drop.y) - lightAngle
+	waveAngle := d / 5.0
+	depth := math.Sin(waveAngle)
 	depth *= (drop.size - d) / drop.size
 	depth *= drop.amplitude
-	return depth, depth, depth
+	depth *= math.Sin(angleToDrop)
+	return depth, depth / 4, depth / 4
 }
 
 func (dropField dropFieldT) render(x float64, y float64) (r, g, b float64) {

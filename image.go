@@ -77,7 +77,7 @@ func createBluedrops(rect image.Rectangle) *image.NRGBA {
 			{
 				x:         400.0,
 				y:         400.0,
-				amplitude: 10.0,
+				amplitude: 30.0,
 				size:      200,
 			},
 		},
