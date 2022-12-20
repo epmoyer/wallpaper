@@ -28,16 +28,16 @@ func main() {
 			Rect: image.Rect(0, 0, 2560, 1664),
 			PPI:  224,
 		},
-		// {
-		// 	Name: "MacBookPro_16",
-		// 	Rect: image.Rect(0, 0, 3072, 1920),
-		// 	PPI:  226,
-		// },
-		// {
-		// 	Name: "Dell_U4919DW",
-		// 	Rect: image.Rect(0, 0, 5120, 1440),
-		// 	PPI:  109,
-		// },
+		{
+			Name: "MacBookPro_16",
+			Rect: image.Rect(0, 0, 3072, 1920),
+			PPI:  226,
+		},
+		{
+			Name: "Dell_U4919DW",
+			Rect: image.Rect(0, 0, 5120, 1440),
+			PPI:  109,
+		},
 	}
 	for _, display := range displays {
 		var img *image.NRGBA
@@ -159,20 +159,14 @@ func createBlueHatch(rect image.Rectangle, display displayT) *image.NRGBA {
 			yNorm := float64(y) / float64(height)
 			angle := (float64)(x+width-y) / 3.4567
 			angle *= float64(BASELINE_PPI) / float64(display.PPI)
-			angle2 := (float64)(x+y) / 3.4567
-			angle2 *= float64(BASELINE_PPI) / float64(display.PPI)
-			// amplitude := math.Sin(angle) + math.Sin(angle2)
+			amplitude := math.Sin(angle)
 			base := x*4 + y*stride
-			var shade float64
-			// shade = (amplitude + 1) * 5
-			if math.Sin(angle) > 0.5 || math.Sin(angle2) > 0.5 {
-				shade = 5
-			}
-			fade := 70 * yNorm
+			shade := (amplitude + 1) * 5
+			fade := 80 * yNorm
 
-			r = 128 + 10 + shade
-			g = 128 + shade*1.2 + fade
-			b = 128 + 30 + shade + bump*0.001
+			r = 50 + 10 + shade + fade
+			g = 50 + 40 + shade*1.2 + fade
+			b = 50 + 70 + shade + fade + 0.00001*bump
 
 			pix[base+0] = uint8(r)
 			pix[base+1] = uint8(g)
