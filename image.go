@@ -230,7 +230,7 @@ func createBlueHatchSaw(rect image.Rectangle, display displayT) *image.NRGBA {
 			// amplitude := (math.Abs(math.Mod(angle, 2*math.Pi)-math.Pi) - (math.Pi / 2)) / (math.Pi / 2)
 
 			// Sawtooth
-			amplitude := (math.Mod(angle, 2*math.Pi) - math.Pi) / math.Pi
+			amplitude := -(math.Mod(angle, 2*math.Pi) - math.Pi) / math.Pi
 
 			base := x*4 + y*stride
 			shade := (amplitude + 1) * 10
@@ -256,7 +256,7 @@ func createBlueHatchSaw(rect image.Rectangle, display displayT) *image.NRGBA {
 	saturate(img, 0.1)
 	// hue(img, -55)
 	// created =
-	// img = imaging.Blur(img, 3.2)
+	img = imaging.Blur(img, 0.5)
 	img = imaging.AdjustBrightness(img, -20)
 	return img
 }
