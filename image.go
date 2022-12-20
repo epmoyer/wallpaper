@@ -49,15 +49,15 @@ func main() {
 		// img = createPlumset(rect, display)
 		// save(filename, img)
 
-		filename = fmt.Sprintf("wallpaper_melon_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
-		fmt.Printf("Creating %s...\n", filename)
-		img = createMelon(rect, display)
-		save(filename, img)
-
-		// filename := fmt.Sprintf("wallpaper_bluedrops_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
+		// filename = fmt.Sprintf("wallpaper_melon_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
 		// fmt.Printf("Creating %s...\n", filename)
-		// img = createBluedrops(rect)
+		// img = createMelon(rect, display)
 		// save(filename, img)
+
+		filename = fmt.Sprintf("wallpaper_bluedrops_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
+		fmt.Printf("Creating %s...\n", filename)
+		img = createBluedrops(rect)
+		save(filename, img)
 	}
 }
 
@@ -71,6 +71,18 @@ func createBluedrops(rect image.Rectangle) *image.NRGBA {
 	// m1X := 0
 	// m1Y := 0
 	// diagonal := math.Sqrt(float64(width*width + height*height))
+
+	field := dropFieldT{
+		Drops: []dropT{
+			{
+				x:         400.0,
+				y:         400.0,
+				amplitude: 10.0,
+				size:      200,
+			},
+		},
+	}
+
 	for x := 0; x < width; x++ {
 		for y := 0; y < height; y++ {
 
@@ -83,9 +95,10 @@ func createBluedrops(rect image.Rectangle) *image.NRGBA {
 			// shade := (amplitude + 1) * 5
 			fade := 64 * yNorm
 
-			r = 70
-			g = 70 + fade
-			b = 128 + 64
+			dr, dg, db := field.render(float64(x), float64(y))
+			r = 70 + dr
+			g = 70 + fade + dg
+			b = 128 + 64 + db
 
 			base := x*4 + y*stride
 			pix[base+0] = uint8(r)
@@ -351,6 +364,11 @@ func createTestImage3(rect image.Rectangle) (created *image.NRGBA) {
 func distance(x1 int, y1 int, x2 int, y2 int) float64 {
 	return math.Sqrt(
 		math.Pow(float64(x1-x2), 2) + math.Pow(float64(y1-y2), 2))
+}
+
+func distanceF(x1 float64, y1 float64, x2 float64, y2 float64) float64 {
+	return math.Sqrt(
+		math.Pow(x1-x2, 2) + math.Pow(y1-y2, 2))
 }
 
 func createTestImage1(rect image.Rectangle) (created *image.NRGBA) {
