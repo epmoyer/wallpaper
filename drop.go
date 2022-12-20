@@ -9,6 +9,7 @@ type dropT struct {
 	y         float64
 	amplitude float64
 	size      float64
+	waveSize  float64
 }
 
 type dropFieldT struct {
@@ -21,7 +22,7 @@ func (drop dropT) render(x float64, y float64) (r, g, b float64) {
 		return 0, 0, 0
 	}
 	angleToDrop := math.Atan2(x-drop.x, y-drop.y) - lightAngle
-	waveAngle := d / 5.0
+	waveAngle := d / drop.waveSize
 	depth := math.Sin(waveAngle)
 	depth *= (drop.size - d) / drop.size
 	depth *= drop.amplitude

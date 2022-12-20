@@ -1,12 +1,12 @@
 package main
 
 import (
-	"crypto/rand"
 	"fmt"
 	"image"
 	"image/png"
 	"log"
 	"math"
+	"math/rand"
 	"os"
 
 	"github.com/disintegration/imaging"
@@ -28,16 +28,16 @@ func main() {
 			Rect: image.Rect(0, 0, 2560, 1664),
 			PPI:  224,
 		},
-		{
-			Name: "MacBookPro_16",
-			Rect: image.Rect(0, 0, 3072, 1920),
-			PPI:  226,
-		},
-		{
-			Name: "Dell_U4919DW",
-			Rect: image.Rect(0, 0, 5120, 1440),
-			PPI:  109,
-		},
+		// {
+		// 	Name: "MacBookPro_16",
+		// 	Rect: image.Rect(0, 0, 3072, 1920),
+		// 	PPI:  226,
+		// },
+		// {
+		// 	Name: "Dell_U4919DW",
+		// 	Rect: image.Rect(0, 0, 5120, 1440),
+		// 	PPI:  109,
+		// },
 	}
 	for _, display := range displays {
 		var img *image.NRGBA
@@ -79,8 +79,20 @@ func createBluedrops(rect image.Rectangle) *image.NRGBA {
 				y:         400.0,
 				amplitude: 30.0,
 				size:      200,
+				waveSize:  5,
 			},
 		},
+	}
+
+	rand.Seed(1)
+	for i := 0; i < 100; i++ {
+		field.Drops = append(field.Drops, dropT{
+			x:         rand.Float64() * float64(width),
+			y:         rand.Float64() * float64(width),
+			amplitude: 20 + rand.Float64()*30,
+			size:      100 + 200*rand.Float64(),
+			waveSize:  5 + rand.Float64()*5,
+		})
 	}
 
 	for x := 0; x < width; x++ {
@@ -388,18 +400,6 @@ func createTestImage1(rect image.Rectangle) (created *image.NRGBA) {
 			// fmt.Println(x)
 		}
 	}
-	// rand.Read(pix)
-	created = &image.NRGBA{
-		Pix:    pix,
-		Stride: rect.Dx() * 4,
-		Rect:   rect,
-	}
-	return
-}
-
-func createRandomImage(rect image.Rectangle) (created *image.NRGBA) {
-	pix := make([]uint8, rect.Dx()*rect.Dy()*4)
-	rand.Read(pix)
 	created = &image.NRGBA{
 		Pix:    pix,
 		Stride: rect.Dx() * 4,
