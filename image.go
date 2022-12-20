@@ -146,10 +146,19 @@ func createBluedrops(rect image.Rectangle) *image.NRGBA {
 	return img
 }
 
+func createGreenHatch(rect image.Rectangle, display displayT) *image.NRGBA {
+	img := createBlueHatch(rect, display)
+	hue(img, -20)
+	img = imaging.AdjustSaturation(img, -60)
+	img = imaging.AdjustBrightness(img, 10)
+	return img
+}
+
 func createPurpleHatch(rect image.Rectangle, display displayT) *image.NRGBA {
 	img := createBlueHatch(rect, display)
 	hue(img, +70)
 	img = imaging.AdjustSaturation(img, -60)
+	img = imaging.AdjustBrightness(img, 10)
 	return img
 }
 
