@@ -16,41 +16,47 @@ import (
 type displayT struct {
 	Name string
 	Rect image.Rectangle
+	PPI  int
 }
+
+const BASELINE_PPI = 109
 
 func main() {
 	displays := []displayT{
 		{
 			Name: "m2_Air",
 			Rect: image.Rect(0, 0, 2560, 1664),
+			PPI:  224,
 		},
-		// {
-		// 	Name: "MacBookPro_16",
-		// 	Rect: image.Rect(0, 0, 3072, 1920),
-		// },
-		// {
-		// 	Name: "Dell_U4919DW",
-		// 	Rect: image.Rect(0, 0, 5120, 1440),
-		// },
+		{
+			Name: "MacBookPro_16",
+			Rect: image.Rect(0, 0, 3072, 1920),
+			PPI:  226,
+		},
+		{
+			Name: "Dell_U4919DW",
+			Rect: image.Rect(0, 0, 5120, 1440),
+			PPI:  109,
+		},
 	}
 	for _, display := range displays {
 		var img *image.NRGBA
 		rect := display.Rect
 
-		// filename := fmt.Sprintf("wallpaper_plumset_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
-		// fmt.Printf("Creating %s...\n", filename)
-		// img = createPlumset(rect)
-		// save(filename, img)
+		filename := fmt.Sprintf("wallpaper_plumset_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
+		fmt.Printf("Creating %s...\n", filename)
+		img = createPlumset(rect, display)
+		save(filename, img)
 
 		// filename := fmt.Sprintf("wallpaper_melon_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
 		// fmt.Printf("Creating %s...\n", filename)
 		// img = createMelon(rect)
 		// save(filename, img)
 
-		filename := fmt.Sprintf("wallpaper_bluedrops_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
-		fmt.Printf("Creating %s...\n", filename)
-		img = createBluedrops(rect)
-		save(filename, img)
+		// filename := fmt.Sprintf("wallpaper_bluedrops_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
+		// fmt.Printf("Creating %s...\n", filename)
+		// img = createBluedrops(rect)
+		// save(filename, img)
 	}
 }
 
@@ -149,7 +155,7 @@ func createMelon(rect image.Rectangle) *image.NRGBA {
 	return img
 }
 
-func createPlumset(rect image.Rectangle) *image.NRGBA {
+func createPlumset(rect image.Rectangle, display displayT) *image.NRGBA {
 	pix := make([]uint8, rect.Dx()*rect.Dy()*4)
 	stride := rect.Dx() * 4
 	m1X := rect.Dx()
@@ -161,6 +167,7 @@ func createPlumset(rect image.Rectangle) *image.NRGBA {
 			m2DistanceNorm := m2Distance / diagonal
 			yNorm := float64(y) / float64(rect.Dy())
 			angle := (float64)(x+y) / 5.4567
+			angle *= float64(BASELINE_PPI) / float64(display.PPI)
 			amplitude := math.Sin(angle)
 			base := x*4 + y*stride
 			shade := uint8((amplitude+1)*5) + 150
