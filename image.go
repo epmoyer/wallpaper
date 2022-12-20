@@ -19,6 +19,14 @@ type displayT struct {
 	enabled bool
 }
 
+type renderFuncT func(rect image.Rectangle, display displayT) *image.NRGBA
+
+type renderT struct {
+	Name       string
+	RenderFunc renderFuncT
+	enabled    bool
+}
+
 const BASELINE_PPI = 109
 
 func main() {
@@ -33,15 +41,34 @@ func main() {
 			Name:    "MacBookPro_16",
 			Rect:    image.Rect(0, 0, 3072, 1920),
 			PPI:     226,
-			enabled: false,
+			enabled: true,
 		},
 		{
 			Name:    "Dell_U4919DW",
 			Rect:    image.Rect(0, 0, 5120, 1440),
 			PPI:     109,
-			enabled: false,
+			enabled: true,
 		},
 	}
+
+	renders := []renderT{
+		{
+			Name:       "hatch-saw-blue",
+			RenderFunc: createHatchSawBlue,
+			enabled:    true,
+		},
+		{
+			Name:       "hatch-saw-purple",
+			RenderFunc: createHatchSawPurple,
+			enabled:    true,
+		},
+		{
+			Name:       "hatch-sine-blue",
+			RenderFunc: createBlueHatch,
+			enabled:    true,
+		},
+	}
+
 	for _, display := range displays {
 		if !display.enabled {
 			continue
@@ -49,6 +76,15 @@ func main() {
 		var img *image.NRGBA
 		rect := display.Rect
 		var filename string
+
+		for _, render := range renders {
+			filename = fmt.Sprintf(
+				"wallpaper_%s_%s_%dx%d.png",
+				render.Name, display.Name, rect.Dx(), rect.Dy())
+			fmt.Printf("Creating %s...\n", filename)
+			img = render.RenderFunc(rect, display)
+			save(filename, img)
+		}
 
 		// filename = fmt.Sprintf("wallpaper_plumset_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
 		// fmt.Printf("Creating %s...\n", filename)
@@ -65,10 +101,10 @@ func main() {
 		// img = createBlueHatchTri(rect, display)
 		// save(filename, img)
 
-		filename = fmt.Sprintf("wallpaper_bluehatch_saw_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
-		fmt.Printf("Creating %s...\n", filename)
-		img = createBlueHatchSaw(rect, display)
-		save(filename, img)
+		// filename = fmt.Sprintf("wallpaper_bluehatch_saw_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
+		// fmt.Printf("Creating %s...\n", filename)
+		// img = createBlueHatchSaw(rect, display)
+		// save(filename, img)
 
 		// filename = fmt.Sprintf("wallpaper_bluehatch_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
 		// fmt.Printf("Creating %s...\n", filename)
@@ -212,7 +248,15 @@ func createBlueHatchTri(rect image.Rectangle, display displayT) *image.NRGBA {
 	return img
 }
 
-func createBlueHatchSaw(rect image.Rectangle, display displayT) *image.NRGBA {
+func createHatchSawPurple(rect image.Rectangle, display displayT) *image.NRGBA {
+	img := createHatchSawBlue(rect, display)
+	hue(img, +70)
+	img = imaging.AdjustSaturation(img, -60)
+	img = imaging.AdjustBrightness(img, 10)
+	return img
+}
+
+func createHatchSawBlue(rect image.Rectangle, display displayT) *image.NRGBA {
 	var r, g, b float64
 	width := rect.Dx()
 	height := rect.Dy()
