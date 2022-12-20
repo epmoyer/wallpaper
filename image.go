@@ -58,6 +58,11 @@ func main() {
 			enabled:    true,
 		},
 		{
+			Name:       "hatch-tri-blue",
+			RenderFunc: createBlueHatchTri,
+			enabled:    true,
+		},
+		{
 			Name:       "hatch-saw-purple",
 			RenderFunc: createHatchSawPurple,
 			enabled:    true,
@@ -67,6 +72,31 @@ func main() {
 			RenderFunc: createBlueHatch,
 			enabled:    true,
 		},
+		{
+			Name:       "hatch-sine-purple",
+			RenderFunc: createPurpleHatch,
+			enabled:    true,
+		},
+		{
+			Name:       "hatch-sine-green",
+			RenderFunc: createGreenHatch,
+			enabled:    true,
+		},
+		{
+			Name:       "plumset",
+			RenderFunc: createPlumset,
+			enabled:    true,
+		},
+		{
+			Name:       "melon",
+			RenderFunc: createMelon,
+			enabled:    true,
+		},
+		// {
+		// 	Name:       "drops-blue",
+		// 	RenderFunc: createBluedrops,
+		// 	enabled:    false,
+		// },
 	}
 
 	for _, display := range displays {
@@ -85,46 +115,6 @@ func main() {
 			img = render.RenderFunc(rect, display)
 			save(filename, img)
 		}
-
-		// filename = fmt.Sprintf("wallpaper_plumset_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
-		// fmt.Printf("Creating %s...\n", filename)
-		// img = createPlumset(rect, display)
-		// save(filename, img)
-
-		// filename = fmt.Sprintf("wallpaper_melon_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
-		// fmt.Printf("Creating %s...\n", filename)
-		// img = createMelon(rect, display)
-		// save(filename, img)
-
-		// filename = fmt.Sprintf("wallpaper_bluehatch_tri_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
-		// fmt.Printf("Creating %s...\n", filename)
-		// img = createBlueHatchTri(rect, display)
-		// save(filename, img)
-
-		// filename = fmt.Sprintf("wallpaper_bluehatch_saw_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
-		// fmt.Printf("Creating %s...\n", filename)
-		// img = createBlueHatchSaw(rect, display)
-		// save(filename, img)
-
-		// filename = fmt.Sprintf("wallpaper_bluehatch_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
-		// fmt.Printf("Creating %s...\n", filename)
-		// img = createBlueHatch(rect, display)
-		// save(filename, img)
-
-		// filename = fmt.Sprintf("wallpaper_purplehatch_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
-		// fmt.Printf("Creating %s...\n", filename)
-		// img = createPurpleHatch(rect, display)
-		// save(filename, img)
-
-		// filename = fmt.Sprintf("wallpaper_greenhatch_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
-		// fmt.Printf("Creating %s...\n", filename)
-		// img = createGreenHatch(rect, display)
-		// save(filename, img)
-
-		// filename = fmt.Sprintf("wallpaper_bluedrops_%s_%dx%d.png", display.Name, rect.Dx(), rect.Dy())
-		// fmt.Printf("Creating %s...\n", filename)
-		// img = createBluedrops(rect)
-		// save(filename, img)
 	}
 }
 
