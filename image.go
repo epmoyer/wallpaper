@@ -86,12 +86,13 @@ func createMelon(rect image.Rectangle) *image.NRGBA {
 		Stride: rect.Dx() * 4,
 		Rect:   rect,
 	}
-	brighten(img, 0.1)
+	// brighten(img, 0.1)
 	// lighten(created, 0.03)
 	saturate(img, 0.1)
 	// hue(img, -55)
 	// created =
 	img = imaging.Blur(img, 3.2)
+	img = imaging.AdjustBrightness(img, -20)
 	return img
 }
 
@@ -122,11 +123,12 @@ func createPlumset(rect image.Rectangle) *image.NRGBA {
 		Stride: rect.Dx() * 4,
 		Rect:   rect,
 	}
-	brighten(img, 0.23)
+	// brighten(img, 0.23)
 	// lighten(created, 0.03)
-	saturate(img, 0.25)
+	// saturate(img, 0.25)
 	// created =
 	img = imaging.Blur(img, 3.2)
+	img = imaging.AdjustBrightness(img, -20)
 	return img
 }
 
