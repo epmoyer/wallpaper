@@ -13,9 +13,10 @@ import (
 )
 
 type displayT struct {
-	Name string
-	Rect image.Rectangle
-	PPI  int
+	Name    string
+	Rect    image.Rectangle
+	PPI     int
+	enabled bool
 }
 
 const BASELINE_PPI = 109
@@ -23,22 +24,28 @@ const BASELINE_PPI = 109
 func main() {
 	displays := []displayT{
 		{
-			Name: "m2_Air",
-			Rect: image.Rect(0, 0, 2560, 1664),
-			PPI:  224,
+			Name:    "m2_Air",
+			Rect:    image.Rect(0, 0, 2560, 1664),
+			PPI:     224,
+			enabled: true,
 		},
 		{
-			Name: "MacBookPro_16",
-			Rect: image.Rect(0, 0, 3072, 1920),
-			PPI:  226,
+			Name:    "MacBookPro_16",
+			Rect:    image.Rect(0, 0, 3072, 1920),
+			PPI:     226,
+			enabled: false,
 		},
 		{
-			Name: "Dell_U4919DW",
-			Rect: image.Rect(0, 0, 5120, 1440),
-			PPI:  109,
+			Name:    "Dell_U4919DW",
+			Rect:    image.Rect(0, 0, 5120, 1440),
+			PPI:     109,
+			enabled: false,
 		},
 	}
 	for _, display := range displays {
+		if !display.enabled {
+			continue
+		}
 		var img *image.NRGBA
 		rect := display.Rect
 		var filename string
