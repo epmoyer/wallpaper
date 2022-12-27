@@ -67,7 +67,7 @@ func main() {
 		{
 			Name:       "hatch-saw-wave-orange",
 			RenderFunc: createHatchSawWaveOrange,
-			enabled:    false,
+			enabled:    true,
 		},
 		{
 			Name:       "hatch-saw-wave-teal",
