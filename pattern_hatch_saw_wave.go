@@ -13,10 +13,7 @@ func createHatchSawWaveBlue(rect image.Rectangle, display displayT) *image.NRGBA
 	height := rect.Dy()
 	pix := make([]uint8, width*height*4)
 	stride := width * 4
-	// m1X := width / 2
-	// m1X := 0
-	// m1Y := 0
-	// diagonal := math.Sqrt(float64(width*width + height*height))
+
 	for x := 0; x < width; x++ {
 		for y := 0; y < height; y++ {
 
@@ -46,12 +43,9 @@ func createHatchSawWaveBlue(rect image.Rectangle, display displayT) *image.NRGBA
 		Stride: rect.Dx() * 4,
 		Rect:   rect,
 	}
-	// brighten(img, 0.1)
-	// lighten(created, 0.03)
+
 	saturate(img, 0.1)
-	// hue(img, -55)
-	// created =
 	img = imaging.Blur(img, 0.5)
-	// img = imaging.AdjustBrightness(img, -10)
+
 	return img
 }
