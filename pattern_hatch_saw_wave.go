@@ -14,34 +14,26 @@ func createHatchSawWaveBlue(rect image.Rectangle, display displayT) *image.NRGBA
 	pix := make([]uint8, width*height*4)
 	stride := width * 4
 	// m1X := width / 2
-	m1X := 0
-	m1Y := 0
-	diagonal := math.Sqrt(float64(width*width + height*height))
+	// m1X := 0
+	// m1Y := 0
+	// diagonal := math.Sqrt(float64(width*width + height*height))
 	for x := 0; x < width; x++ {
 		for y := 0; y < height; y++ {
-			m2Distance := distance(x, y, m1X, m1Y)
-			m2DistanceNorm := m2Distance / diagonal
-			bump := 72 * (1 - m2DistanceNorm)
-			yNorm := float64(y) / float64(height)
-			angle := (float64)(x+width-y) / 2.12345
-			angle *= float64(BASELINE_PPI) / float64(display.PPI)
-			// angle /= 10
-			// amplitude := math.Sin(angle)
 
-			// Triangle
-			// amplitude := (math.Abs(math.Mod(angle, 2*math.Pi)-math.Pi) - (math.Pi / 2)) / (math.Pi / 2)
+			yNormalized := float64(y) / float64(height)
+			angleSaw := (float64)(x+width-y) / 2.12345
+			angleSaw *= float64(BASELINE_PPI) / float64(display.PPI)
 
 			// Sawtooth
-			amplitude := -(math.Mod(angle, 2*math.Pi) - math.Pi) / math.Pi
+			amplitude := -(math.Mod(angleSaw, 2*math.Pi) - math.Pi) / math.Pi
 
 			base := x*4 + y*stride
-			// shade := (amplitude + 1) * 7
 			shade := (amplitude + 1) * 4
-			fade := 80 * (1 - yNorm)
+			fade := 80 * (1 - yNormalized)
 
 			r = 50 + 10 + shade + fade
 			g = 50 + 40 + shade*1.2 + fade
-			b = 50 + 70 + shade + fade + 0.00001*bump
+			b = 50 + 70 + shade + fade
 
 			pix[base+0] = uint8(r)
 			pix[base+1] = uint8(g)
