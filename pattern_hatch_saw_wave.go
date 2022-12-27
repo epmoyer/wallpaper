@@ -32,7 +32,7 @@ func createHatchSawWaveBlue(rect image.Rectangle, display displayT) *image.NRGBA
 			amplitude := -(math.Mod(angleSaw, 2*math.Pi) - math.Pi) / math.Pi
 
 			base := x*4 + y*stride
-			shade := (amplitude + 1) * 4
+			shade := (amplitude + 1) * 8
 			fade := 80 * (1 - yNormalized)
 
 			r = 50 + 10 + shade + fade
