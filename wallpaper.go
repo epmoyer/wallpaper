@@ -38,31 +38,36 @@ func main() {
 			Name:    "MacBookPro_16",
 			Rect:    image.Rect(0, 0, 3072, 1920),
 			PPI:     226,
-			enabled: true,
+			enabled: false,
 		},
 		{
 			Name:    "Dell_U4919DW",
 			Rect:    image.Rect(0, 0, 5120, 1440),
 			PPI:     109,
-			enabled: true,
+			enabled: false,
 		},
 	}
 
 	renders := []renderT{
 		{
+			Name:       "hatch-saw-wave-blue",
+			RenderFunc: createHatchSawWaveBlue,
+			enabled:    true,
+		},
+		{
 			Name:       "hatch-saw-blue",
 			RenderFunc: createHatchSawBlue,
-			enabled:    true,
+			enabled:    false,
 		},
 		{
 			Name:       "hatch-saw-purple",
 			RenderFunc: createHatchSawPurple,
-			enabled:    true,
+			enabled:    false,
 		},
 		{
 			Name:       "hatch-saw-green",
 			RenderFunc: createHatchSawGreen,
-			enabled:    true,
+			enabled:    false,
 		},
 		{
 			Name:       "hatch-tri-blue",
