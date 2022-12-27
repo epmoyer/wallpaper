@@ -11,7 +11,7 @@ func createHatchSawWaveGreen(rect image.Rectangle, display displayT) *image.NRGB
 	img := createHatchSawWaveBlue(rect, display)
 	hue(img, -25)
 	img = imaging.AdjustSaturation(img, -60)
-	img = imaging.AdjustBrightness(img, 10)
+	img = imaging.AdjustBrightness(img, -3)
 	return img
 }
 
@@ -19,7 +19,7 @@ func createHatchSawWavePurple(rect image.Rectangle, display displayT) *image.NRG
 	img := createHatchSawWaveBlue(rect, display)
 	hue(img, +30)
 	img = imaging.AdjustSaturation(img, -60)
-	img = imaging.AdjustBrightness(img, 10)
+	img = imaging.AdjustBrightness(img, 5)
 	return img
 }
 
@@ -27,7 +27,7 @@ func createHatchSawWaveOrange(rect image.Rectangle, display displayT) *image.NRG
 	img := createHatchSawWaveBlue(rect, display)
 	hue(img, +180)
 	img = imaging.AdjustSaturation(img, -10)
-	img = imaging.AdjustBrightness(img, 10)
+	// img = imaging.AdjustBrightness(img, -10)
 	return img
 }
 
@@ -38,14 +38,6 @@ func createHatchSawWaveTeal(rect image.Rectangle, display displayT) *image.NRGBA
 	img = imaging.AdjustBrightness(img, 10)
 	return img
 }
-
-// func createHatchSawWaveOrange(rect image.Rectangle, display displayT) *image.NRGBA {
-// 	img := createHatchSawWaveBlue(rect, display)
-// 	hue(img, +180)
-// 	img = imaging.AdjustSaturation(img, -10)
-// 	img = imaging.AdjustBrightness(img, 10)
-// 	return img
-// }
 
 func createHatchSawWaveBlue(rect image.Rectangle, display displayT) *image.NRGBA {
 	var r, g, b float64
