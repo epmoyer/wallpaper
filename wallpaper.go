@@ -174,5 +174,13 @@ func save(filePath string, img *image.NRGBA) {
 }
 
 func (d displayT) showInfo() {
-	fmt.Printf("%s: %dx%d, %d PPI\n", d.Name, d.Rect.Dx(), d.Rect.Dy(), d.PPI)
+	fmt.Printf(
+		"%s: %d x %d @ %d PPI (%0.2fin x %0.2fin)\n",
+		d.Name,
+		d.Rect.Dx(),
+		d.Rect.Dy(),
+		d.PPI,
+		float64(d.Rect.Dx())/float64(d.PPI),
+		float64(d.Rect.Dy())/float64(d.PPI),
+	)
 }
