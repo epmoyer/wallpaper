@@ -55,7 +55,7 @@ func createHatchSawWaveBlue(rect image.Rectangle, display displayT) *image.NRGBA
 			yIn := float64(y) / float64(display.PPI)
 
 			// Wave
-			angleWave := (float64)(xIn+yIn) * 6
+			angleWave := (float64)(xIn+yIn) * 8
 			amplitudeWave := 0.03 * float64(display.PPI) * math.Sin(angleWave)
 
 			// Sawtooth

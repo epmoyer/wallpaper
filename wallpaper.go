@@ -129,7 +129,7 @@ func main() {
 	for _, display := range displays {
 		display.showInfo()
 		if !display.enabled {
-			fmt.Println("   Disabled")
+			fmt.Println("   DISABLED")
 			continue
 		}
 		var img *image.NRGBA
