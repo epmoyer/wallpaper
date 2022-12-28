@@ -174,5 +174,5 @@ func save(filePath string, img *image.NRGBA) {
 }
 
 func (d displayT) showInfo() {
-	fmt.Printf("%s: (resolution)\n", d.Name)
+	fmt.Printf("%s: %dx%d, %d PPI\n", d.Name, d.Rect.Dx(), d.Rect.Dy(), d.PPI)
 }
