@@ -38,13 +38,13 @@ func main() {
 			Name:    "MacBookPro_16",
 			Rect:    image.Rect(0, 0, 3072, 1920),
 			PPI:     226,
-			enabled: true,
+			enabled: false,
 		},
 		{
 			Name:    "Dell_U4919DW",
 			Rect:    image.Rect(0, 0, 5120, 1440),
 			PPI:     109,
-			enabled: true,
+			enabled: false,
 		},
 	}
 
@@ -57,22 +57,22 @@ func main() {
 		{
 			Name:       "hatch-saw-wave-purple",
 			RenderFunc: createHatchSawWavePurple,
-			enabled:    true,
+			enabled:    false,
 		},
 		{
 			Name:       "hatch-saw-wave-green",
 			RenderFunc: createHatchSawWaveGreen,
-			enabled:    true,
+			enabled:    false,
 		},
 		{
 			Name:       "hatch-saw-wave-orange",
 			RenderFunc: createHatchSawWaveOrange,
-			enabled:    true,
+			enabled:    false,
 		},
 		{
 			Name:       "hatch-saw-wave-teal",
 			RenderFunc: createHatchSawWaveTeal,
-			enabled:    true,
+			enabled:    false,
 		},
 		{
 			Name:       "hatch-saw-blue",
@@ -127,7 +127,9 @@ func main() {
 	}
 
 	for _, display := range displays {
+		display.showInfo()
 		if !display.enabled {
+			fmt.Println("   Disabled")
 			continue
 		}
 		var img *image.NRGBA
@@ -141,7 +143,7 @@ func main() {
 			filename = fmt.Sprintf(
 				"img/wallpaper_%s_%s_%dx%d.png",
 				render.Name, display.Name, rect.Dx(), rect.Dy())
-			fmt.Printf("Creating %s...\n", filename)
+			fmt.Printf("   Creating %s...\n", filename)
 			img = render.RenderFunc(rect, display)
 			save(filename, img)
 		}
@@ -169,4 +171,8 @@ func save(filePath string, img *image.NRGBA) {
 		log.Println("Cannot create file:", err)
 	}
 	png.Encode(imgFile, img.SubImage(img.Rect))
+}
+
+func (d displayT) showInfo() {
+	fmt.Printf("%s: (resolution)\n", d.Name)
 }
