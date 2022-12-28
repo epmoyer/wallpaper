@@ -61,7 +61,8 @@ func createHatchSawWaveBlue(rect image.Rectangle, display displayT) *image.NRGBA
 			// Sawtooth
 			angleSaw := (float64)(xIn+widthIn-yIn) * math.Pi * 2 * 8
 			angleSaw += amplitudeWave
-			amplitude := -(math.Mod(angleSaw, 2*math.Pi) - math.Pi) / math.Pi
+			// amplitude := -(math.Mod(angleSaw, 2*math.Pi) - math.Pi) / math.Pi
+			amplitude := math.Cos(math.Mod(angleSaw/2, math.Pi))
 
 			base := x*4 + y*stride
 			shade := (amplitude + 1) * 6
