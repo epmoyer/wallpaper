@@ -141,8 +141,11 @@ func main() {
 				continue
 			}
 			filename = fmt.Sprintf(
-				"img/wallpaper_%s_%s_%dx%d.png",
-				render.Name, display.Name, rect.Dx(), rect.Dy())
+				"img/wallpaper_%s_%dx%d__%s.png",
+				display.Name,
+				rect.Dx(),
+				rect.Dy(),
+				render.Name)
 			fmt.Printf("   Creating %s...\n", filename)
 			img = render.RenderFunc(rect, display)
 			save(filename, img)
