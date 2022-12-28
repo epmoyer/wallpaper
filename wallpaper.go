@@ -38,13 +38,13 @@ func main() {
 			Name:    "MacBookPro_16",
 			Rect:    image.Rect(0, 0, 3072, 1920),
 			PPI:     226,
-			enabled: false,
+			enabled: true,
 		},
 		{
 			Name:    "Dell_U4919DW",
 			Rect:    image.Rect(0, 0, 5120, 1440),
 			PPI:     109,
-			enabled: false,
+			enabled: true,
 		},
 	}
 
@@ -62,17 +62,17 @@ func main() {
 		{
 			Name:       "hatch-saw-wave-green",
 			RenderFunc: createHatchSawWaveGreen,
-			enabled:    false,
+			enabled:    true,
 		},
 		{
 			Name:       "hatch-saw-wave-orange",
 			RenderFunc: createHatchSawWaveOrange,
-			enabled:    false,
+			enabled:    true,
 		},
 		{
 			Name:       "hatch-saw-wave-teal",
 			RenderFunc: createHatchSawWaveTeal,
-			enabled:    false,
+			enabled:    true,
 		},
 		{
 			Name:       "hatch-saw-blue",
