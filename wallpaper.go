@@ -127,7 +127,9 @@ func main() {
 	}
 
 	for _, display := range displays {
+		display.showInfo()
 		if !display.enabled {
+			fmt.Println("   DISABLED")
 			continue
 		}
 		var img *image.NRGBA
@@ -139,9 +141,12 @@ func main() {
 				continue
 			}
 			filename = fmt.Sprintf(
-				"img/wallpaper_%s_%s_%dx%d.png",
-				render.Name, display.Name, rect.Dx(), rect.Dy())
-			fmt.Printf("Creating %s...\n", filename)
+				"img/wallpaper_%s_%dx%d__%s.png",
+				display.Name,
+				rect.Dx(),
+				rect.Dy(),
+				render.Name)
+			fmt.Printf("   Creating %s...\n", filename)
 			img = render.RenderFunc(rect, display)
 			save(filename, img)
 		}
@@ -169,4 +174,16 @@ func save(filePath string, img *image.NRGBA) {
 		log.Println("Cannot create file:", err)
 	}
 	png.Encode(imgFile, img.SubImage(img.Rect))
+}
+
+func (d displayT) showInfo() {
+	fmt.Printf(
+		"%s: %d x %d @ %d PPI (%0.2fin x %0.2fin)\n",
+		d.Name,
+		d.Rect.Dx(),
+		d.Rect.Dy(),
+		d.PPI,
+		float64(d.Rect.Dx())/float64(d.PPI),
+		float64(d.Rect.Dy())/float64(d.PPI),
+	)
 }
