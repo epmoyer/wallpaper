@@ -46,6 +46,12 @@ func main() {
 			PPI:     109,
 			enabled: true,
 		},
+		{
+			Name:    "Dell_U3818DW",
+			Rect:    image.Rect(0, 0, 3840, 1600),
+			PPI:     111,
+			enabled: true,
+		},
 	}
 
 	renders := []renderT{
